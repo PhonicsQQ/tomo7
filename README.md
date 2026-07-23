@@ -33,5 +33,3 @@ Everything is editable in `index.html`:
 - **Hours** — the `<ul class="hours-list">` block. Also update the `schedule` object in `script.js` so the live "Open now" badge stays accurate.
 - **Menu items** — each item is one `<div class="mi">…</div>` row inside its category panel.
 - **Phone / address / DoorDash** — search `index.html` for `9513435991`, `Van Buren`, or `doordash`.
-
-Two tempura rolls (Google, Hot Night) show **MP** (market price) because no price is printed on the PDF menu — replace `MP` with a dollar amount when you have it.
