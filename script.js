@@ -60,6 +60,47 @@
     });
   });
 
+  /* ---------- menu tabs: horizontal-scroll affordances ---------- */
+  const tabsWrap = document.getElementById("menuTabsWrap");
+  const tabsScroller = document.getElementById("menuTabs");
+  const tabPrev = document.getElementById("tabPrev");
+  const tabNext = document.getElementById("tabNext");
+
+  if (tabsWrap && tabsScroller) {
+    let cued = true; // right-arrow nudge until the user scrolls once
+
+    const updateCues = () => {
+      const max = tabsScroller.scrollWidth - tabsScroller.clientWidth;
+      const x = tabsScroller.scrollLeft;
+      const moreRight = x < max - 4;
+      tabsWrap.classList.toggle("more-left", x > 4);
+      tabsWrap.classList.toggle("more-right", moreRight);
+      if (cued && moreRight) tabNext.classList.add("cue");
+    };
+
+    const stopCue = () => {
+      if (!cued) return;
+      cued = false;
+      tabNext.classList.remove("cue");
+    };
+
+    const step = () => Math.max(160, tabsScroller.clientWidth * 0.7);
+    tabNext.addEventListener("click", () => {
+      stopCue();
+      tabsScroller.scrollBy({ left: step(), behavior: "smooth" });
+    });
+    tabPrev.addEventListener("click", () => {
+      tabsScroller.scrollBy({ left: -step(), behavior: "smooth" });
+    });
+
+    tabsScroller.addEventListener("scroll", () => { stopCue(); updateCues(); }, { passive: true });
+    window.addEventListener("resize", updateCues);
+    // recompute once fonts/layout settle
+    updateCues();
+    window.addEventListener("load", updateCues);
+    setTimeout(updateCues, 400);
+  }
+
   /* ---------- active nav link on scroll ---------- */
   const sections = ["about", "menu", "hours", "order"]
     .map((id) => document.getElementById(id))
